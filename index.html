@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Download</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .install-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 20px;
+        }
+        #qrcode {
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your App Name</h1>
+    <p>Version 1.0.0</p>
+    <a id="install-link" href="#" class="install-btn">Install App</a>
+    <div>
+        <p>Or scan the QR code to install:</p>
+        <div id="qrcode"></div>
+    </div>
+
+    <script>
+        // 获取当前页面的URL，并构建manifest.plist的绝对URL
+        const baseUrl = window.location.origin;
+        const manifestUrl = baseUrl + '/manifest.plist';
+        const installUrl = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
+
+        // 设置安装链接
+        document.getElementById('install-link').href = installUrl;
+
+        // 生成二维码
+        QRCode.toCanvas(document.getElementById('qrcode'), installUrl, {
+            width: 200,
+            margin: 1
+        }, function (error) {
+            if (error) console.error(error);
+            console.log('QR code generated!');
+        });
+    </script>
+</body>
+</html>
