@@ -36,7 +36,14 @@
 
     <script>
         // 获取当前页面的URL，并构建manifest.plist的绝对URL
-        const baseUrl = window.location.origin;
+        // const baseUrl = window.location.origin;
+        // const manifestUrl = baseUrl + '/manifest.plist';
+        // const installUrl = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
+        https://github.com/Chailang/ipa_distrion/settings/pages
+        const repositoryName = 'ipa_distrion'; // 修改为实际仓库名
+        const githubUsername = 'chailang'; // 修改为实际 GitHub 用户名
+
+        const baseUrl = `https://${githubUsername}.github.io/${repositoryName}`;
         const manifestUrl = baseUrl + '/manifest.plist';
         const installUrl = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
 
