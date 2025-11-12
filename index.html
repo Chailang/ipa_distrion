@@ -125,16 +125,19 @@
             installLink.href = installUrl;
         }
         
-        // 生成二维码
-        var qrcodeElement = document.getElementById('qrcode');
-        if (qrcodeElement && typeof QRCode !== 'undefined') {
-            QRCode.toCanvas(qrcodeElement, installUrl, {
-                width: 180,
-                height: 180,
-                margin: 1
-            });
-        }
-        
+        // // 生成二维码
+        // var qrcodeElement = document.getElementById('qrcode');
+        // if (qrcodeElement && typeof QRCode !== 'undefined') {
+        //     QRCode.toCanvas(qrcodeElement, installUrl, {
+        //         width: 180,
+        //         height: 180,
+        //         margin: 1
+        //     });
+        // }
+          // 使用 Google Charts API 生成二维码（最稳定）
+        var qrImg = document.getElementById('qrcode');
+        qrImg.src = 'https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + 
+                   encodeURIComponent(installUrl) + '&choe=UTF-8';
         // 调试信息
         console.log('下载页面:', baseUrl);
         console.log('安装链接:', installUrl);
