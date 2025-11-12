@@ -1,63 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Download</title>
+    <title>App 下载页面</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <style>
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
             font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             text-align: center;
-            padding: 50px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 16px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #666;
+        }
+        h1 { 
+            font-size: 24px; 
+            margin-bottom: 8px; 
+            color: #333; 
+        }
+        .version { 
+            color: #666; 
+            margin-bottom: 30px; 
         }
         .install-btn {
-            display: inline-block;
-            padding: 15px 30px;
+            display: block;
             background: #007AFF;
             color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
             text-decoration: none;
-            border-radius: 10px;
-            margin: 20px;
+            font-weight: 600;
+            font-size: 18px;
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+        .install-btn:hover {
+            background: #0056CC;
+        }
+        .qrcode-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
         }
         #qrcode {
-            margin: 20px auto;
+            margin: 15px auto;
+        }
+        .steps {
+            text-align: left;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+        .steps li {
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
-    <h1>Coinvex</h1>
-    <p>Version 1.0.0</p>
-    <a id="install-link" href="#" class="install-btn">Install App</a>
-    <div>
-        <p>Or scan the QR code to install:</p>
-        <div id="qrcode"></div>
+    <div class="container">
+        <div class="app-icon">📱</div>
+        <h1>你的应用名称</h1>
+        <p class="version">版本 1.0.0</p>
+        
+        <a href="#" id="install-link" class="install-btn">
+            点击安装应用
+        </a>
+        
+        <div class="qrcode-section">
+            <p><strong>或扫描二维码安装</strong></p>
+            <div id="qrcode"></div>
+            <p style="font-size: 12px; margin-top: 10px; color: #888;">
+                使用 Safari 浏览器扫码
+            </p>
+        </div>
+        
+        <div class="steps">
+            <p><strong>安装说明：</strong></p>
+            <ol>
+                <li>点击上方按钮或在 Safari 中打开此页面</li>
+                <li>点击"安装"并允许安装企业应用</li>
+                <li>前往"设置 → 通用 → 设备管理"信任开发者</li>
+            </ol>
+        </div>
     </div>
 
     <script>
-        // 获取当前页面的URL，并构建manifest.plist的绝对URL
-        // const baseUrl = window.location.origin;
-        // const manifestUrl = baseUrl + '/manifest.plist';
-        // const installUrl = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
-        https://github.com/Chailang/ipa_distrion/settings/pages
-        const repositoryName = 'ipa_distrion'; // 修改为实际仓库名
-        const githubUsername = 'chailang'; // 修改为实际 GitHub 用户名
-
-        const baseUrl = `https://${githubUsername}.github.io/${repositoryName}`;
-        const manifestUrl = baseUrl + '/manifest.plist';
-        const installUrl = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
-
+        // 使用完全兼容的 JavaScript 语法
+        var repositoryName = 'ipa_distrion';
+        var githubUsername = 'chailang'; // 请修改这里
+        
+        // 构建URL
+        var baseUrl = 'https://' + githubUsername + '.github.io/' + repositoryName;
+        var manifestUrl = baseUrl + '/manifest.plist';
+        var installUrl = 'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
+        
         // 设置安装链接
-        document.getElementById('install-link').href = installUrl;
-
+        var installLink = document.getElementById('install-link');
+        if (installLink) {
+            installLink.href = installUrl;
+        }
+        
         // 生成二维码
-        QRCode.toCanvas(document.getElementById('qrcode'), installUrl, {
-            width: 200,
-            margin: 1
-        }, function (error) {
-            if (error) console.error(error);
-            console.log('QR code generated!');
-        });
+        var qrcodeElement = document.getElementById('qrcode');
+        if (qrcodeElement && typeof QRCode !== 'undefined') {
+            QRCode.toCanvas(qrcodeElement, installUrl, {
+                width: 180,
+                height: 180,
+                margin: 1
+            });
+        }
+        
+        // 调试信息
+        console.log('下载页面:', baseUrl);
+        console.log('安装链接:', installUrl);
     </script>
 </body>
 </html>
