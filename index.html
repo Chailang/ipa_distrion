@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App 下载页面</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -125,14 +125,53 @@
             installLink.href = installUrl;
         }
         
-        // 使用 Google Charts API 生成二维码（最稳定）
+        // 使用在线 API 作为备选方案
+        function useOnlineQRAPI() {
+            var qrcodeDiv = document.getElementById('qrcode');
+            if (qrcodeDiv) {
+                var qrImg = document.createElement('img');
+                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + 
+                           encodeURIComponent(installUrl);
+                qrImg.alt = '安装二维码';
+                qrImg.style.display = 'block';
+                qrImg.style.margin = '0 auto';
+                qrImg.onerror = function() {
+                    console.error('在线二维码生成失败');
+                    qrcodeDiv.innerHTML = '<p style="color: red; font-size: 12px;">二维码生成失败，请直接点击上方按钮安装</p>';
+                };
+                qrcodeDiv.innerHTML = '';
+                qrcodeDiv.appendChild(qrImg);
+            }
+        }
+        
+        // 生成二维码 - 优先使用本地库，失败则使用在线 API
         var qrcodeDiv = document.getElementById('qrcode');
         if (qrcodeDiv) {
-            var qrImg = document.createElement('img');
-            qrImg.src = 'https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + 
-                       encodeURIComponent(installUrl) + '&choe=UTF-8';
-            qrImg.alt = '安装二维码';
-            qrcodeDiv.appendChild(qrImg);
+            // 尝试使用本地 qrcode 库
+            if (typeof QRCode !== 'undefined') {
+                try {
+                    QRCode.toCanvas(qrcodeDiv, installUrl, {
+                        width: 180,
+                        height: 180,
+                        margin: 1,
+                        color: {
+                            dark: '#000000',
+                            light: '#FFFFFF'
+                        }
+                    }, function (error) {
+                        if (error) {
+                            console.error('本地二维码生成失败，使用在线 API:', error);
+                            useOnlineQRAPI();
+                        }
+                    });
+                } catch (e) {
+                    console.error('本地二维码生成异常，使用在线 API:', e);
+                    useOnlineQRAPI();
+                }
+            } else {
+                // 如果库未加载，使用在线 API
+                useOnlineQRAPI();
+            }
         }
         // 调试信息
         console.log('下载页面:', baseUrl);
