@@ -90,6 +90,9 @@
         <a href="#" id="install-link" class="install-btn">
             点击安装应用
         </a>
+        <p id="download-tip" style="font-size: 12px; color: #888; margin-top: -10px; margin-bottom: 20px; display: none;">
+            ⚠️ 文件较大（约 61MB），下载可能需要几分钟，请耐心等待
+        </p>
         
         <div class="qrcode-section">
             <p><strong>或扫描二维码安装</strong></p>
@@ -104,7 +107,8 @@
             <ol>
                 <li>点击上方按钮或在 Safari 中打开此页面</li>
                 <li>点击"安装"并允许安装企业应用</li>
-                <li>前往"设置 → 通用 → 设备管理"信任开发者</li>
+                <li>文件较大，下载可能需要几分钟，请保持网络连接</li>
+                <li>下载完成后，前往"设置 → 通用 → 设备管理"信任开发者</li>
             </ol>
         </div>
     </div>
@@ -123,6 +127,11 @@
         var installLink = document.getElementById('install-link');
         if (installLink) {
             installLink.href = installUrl;
+            // 显示下载提示
+            var downloadTip = document.getElementById('download-tip');
+            if (downloadTip) {
+                downloadTip.style.display = 'block';
+            }
         }
         
         // 使用在线 API 作为备选方案
